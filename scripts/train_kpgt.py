@@ -44,8 +44,9 @@ def seed_worker(worker_id):
 if __name__ == '__main__':
     args = parse_args()
     config = config_dict[args.config]
-    print(config)
+    #print(config)
     torch.backends.cudnn.benchmark = True
+    print(local_rank)
     torch.cuda.set_device(local_rank)
     torch.distributed.init_process_group(backend='nccl')
     device = torch.device('cuda', local_rank)
@@ -91,7 +92,6 @@ if __name__ == '__main__':
     trainer.fit(model, train_loader)
     if local_rank == 0:
         summary_writer.close()
-
     
     
 
