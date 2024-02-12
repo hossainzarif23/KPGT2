@@ -70,5 +70,3 @@ class MoleculeDataset(Dataset):
             std = torch.from_numpy(np.nanstd(self.labels.numpy(), axis=0))
         self.mean = mean
         self.std = std
-
-

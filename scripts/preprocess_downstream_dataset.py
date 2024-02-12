@@ -11,15 +11,16 @@ from rdkit import Chem
 from scipy import sparse as sp
 import argparse 
 
-from src.data.featurizer import smiles_to_graph_tune
-from src.data.descriptors.rdNormalizedDescriptors import RDKit2DNormalized
+from KPGT.src.data.featurizer import smiles_to_graph_tune
+from KPGT.src.data.descriptors.rdNormalizedDescriptors import RDKit2DNormalized
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Arguments")
     parser.add_argument("--data_path", type=str, required=True)
     parser.add_argument("--dataset", type=str, required=True)
     parser.add_argument("--path_length", type=int, default=5)
-    parser.add_argument("--n_jobs", type=int, default=32)
+    #parser.add_argument("--n_jobs", type=int, default=32)
+    parser.add_argument("--n_jobs", type=int, default=4)
     args = parser.parse_args()
     return args
 

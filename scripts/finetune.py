@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 
-from src.utils import set_random_seed
+from KPGT.src.utils import set_random_seed
 import argparse
 import torch
 from torch import nn
@@ -10,15 +10,15 @@ from torch.optim import Adam
 from torch.nn import MSELoss, BCEWithLogitsLoss
 import numpy as np
 import random
-from src.data.featurizer import Vocab, N_ATOM_TYPES, N_BOND_TYPES
-from src.data.finetune_dataset import MoleculeDataset
-from src.data.collator import Collator_tune
-from src.model.light import LiGhTPredictor as LiGhT
-from src.trainer.scheduler import PolynomialDecayLR
-from src.trainer.finetune_trainer import Trainer
-from src.trainer.evaluator import Evaluator
-from src.trainer.result_tracker import Result_Tracker
-from src.model_config import config_dict
+from KPGT.src.data.featurizer import Vocab, N_ATOM_TYPES, N_BOND_TYPES
+from KPGT.src.data.finetune_dataset import MoleculeDataset
+from KPGT.src.data.collator import Collator_tune
+from KPGT.src.model.light import LiGhTPredictor as LiGhT
+from KPGT.src.trainer.scheduler import PolynomialDecayLR
+from KPGT.src.trainer.finetune_trainer import Trainer
+from KPGT.src.trainer.evaluator import Evaluator
+from KPGT.src.trainer.result_tracker import Result_Tracker
+from KPGT.src.model_config import config_dict
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -80,9 +80,12 @@ def finetune(args):
     train_dataset = MoleculeDataset(root_path=args.data_path, dataset = args.dataset, dataset_type=args.dataset_type, split_name=f'{args.split}', split='train')
     val_dataset = MoleculeDataset(root_path=args.data_path, dataset = args.dataset, dataset_type=args.dataset_type, split_name=f'{args.split}', split='val')
     test_dataset = MoleculeDataset(root_path=args.data_path, dataset = args.dataset, dataset_type=args.dataset_type, split_name=f'{args.split}', split='test')
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=args.n_threads, worker_init_fn=seed_worker, generator=g, drop_last=True, collate_fn=collator)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=args.n_threads, worker_init_fn=seed_worker, generator=g, drop_last=False, collate_fn=collator)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=args.n_threads, worker_init_fn=seed_worker, generator=g, drop_last=False, collate_fn=collator)
+    # train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=args.n_threads, worker_init_fn=seed_worker, generator=g, drop_last=True, collate_fn=collator)
+    # val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=args.n_threads, worker_init_fn=seed_worker, generator=g, drop_last=False, collate_fn=collator)
+    # test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=args.n_threads, worker_init_fn=seed_worker, generator=g, drop_last=False, collate_fn=collator)
+    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, num_workers=0, worker_init_fn=seed_worker, generator=g, drop_last=True, collate_fn=collator)
+    val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False, num_workers=0, worker_init_fn=seed_worker, generator=g, drop_last=False, collate_fn=collator)
+    test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False, num_workers=0, worker_init_fn=seed_worker, generator=g, drop_last=False, collate_fn=collator)
     # Model Initialization
     model = LiGhT(
         d_node_feats=config['d_node_feats'],
