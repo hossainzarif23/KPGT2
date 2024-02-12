@@ -373,4 +373,3 @@ class RDKit2D(DescriptorGenerator):
 
 RDKit2D()
 
-    
