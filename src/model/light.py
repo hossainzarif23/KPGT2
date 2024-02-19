@@ -315,7 +315,7 @@ class LiGhTPredictor(nn.Module):
         node_h = self.node_emb(g.ndata['begin_end'], indicators)          
         edge_h = self.edge_emb(g.ndata['edge'], indicators)
         triplet_h = self.triplet_emb(node_h, edge_h, fp, md, indicators)
-       # Model
+        # Model
         triplet_h = self.model(g, triplet_h)
         # Readout
         fp_vn = triplet_h[indicators==1]
