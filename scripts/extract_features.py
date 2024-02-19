@@ -52,8 +52,10 @@ def extract_features(args):
         g = g.to(device)
         fps = model.generate_fps(g, ecfp, md)
         fps_list.extend(fps.detach().cpu().numpy().tolist())
-    np.savez_compressed(f"{args.data_path}/{args.dataset}/kpgt_{args.config}.npz", fps=np.array(fps_list))
-    print(f"The extracted features were saving at {args.data_path}/{args.dataset}/kpgt_{args.config}.npz")
+    # np.savez_compressed(f"{args.data_path}/{args.dataset}/kpgt_{args.config}.npz", fps=np.array(fps_list))
+    np.savez_compressed(f"kpgt_{args.config}.npz", fps=np.array(fps_list))
+    # print(f"The extracted features were saving at {args.data_path}/{args.dataset}/kpgt_{args.config}.npz")
+    print(f"The extracted features were saving at kpgt_{args.config}.npz")
 
 if __name__ == '__main__':
     set_random_seed(22,1)
